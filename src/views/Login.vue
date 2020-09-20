@@ -29,7 +29,6 @@
               ]"
             />
 
-            <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
             <div>
               <q-btn size="lg" label="Login " type="submit" color="indigo-5"/>
@@ -48,7 +47,7 @@ import { mapGetters  } from 'vuex'
 
 
 export default {
-  name: "Home",
+  name: "Login",
   data () {
     return {
          name: null,

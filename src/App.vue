@@ -2,27 +2,23 @@
   <div id="app">
     
     <q-layout view="hHh Lpr lff" style="height: 100%" class="shadow-2 rounded-borders">
-
        <q-header  elevated class="bg-blackk">
-         
-
 
         <q-toolbar>
          <q-btn  flat round dense icon="login" label="Logout" @click="logout()"/>
-    
-
          <q-toolbar-title class="text-center">  <span class="time shadow text-center" v-text="currentTime"></span> </q-toolbar-title>
          <q-btn flat round dense icon="face" :label="loginData.name"/>
-          
         </q-toolbar>
-      </q-header>
 
-  
+      </q-header>
       <q-page-container>
         <q-page padding>
+
            <router-view />    
+
         </q-page>
       </q-page-container>
+
     </q-layout>
   </div>
 </template>
@@ -33,7 +29,7 @@
 import { mapGetters  } from 'vuex'
 
 export default {
-  name: "Home",
+  name: "Base",
   data () {
     return {
       drawer: false ,

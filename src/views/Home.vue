@@ -1,9 +1,7 @@
 <template>
   <div class="home">
     
-    <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-    <!-- {{ weatherData }} -->
+   
     <div class="placeSearch row">
       <div class="searchPlace col-lg-6">
 
@@ -245,7 +243,6 @@
 
 <script>
 
-// import HelloWorld from "@/components/HelloWorld.vue";
  import moment from 'moment'; 
 
 
@@ -400,13 +397,6 @@ export default {
   },
 
 
-
-
-     
-  // }
-  // components: {
-  //   HelloWorld
-  // }
 };
 </script>
 
@@ -436,9 +426,7 @@ export default {
 }
 .q-card {
     box-shadow: none;
-    // border-radius: 50px;
-        background-color: #2a588073;
-
+    background-color: #2a588073;
     color: #fff;
 }
 
@@ -512,7 +500,6 @@ export default {
 
    .inputCity
    {
-      // border-right: 1px solid grey ;
       padding-right:4%
    }
 
