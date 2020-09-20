@@ -1,65 +1,23 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
+    
     <q-layout view="hHh Lpr lff" style="height: 100%" class="shadow-2 rounded-borders">
 
        <q-header elevated class="bg-blackk">
-        <q-toolbar>
-          
-          <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+         
 
-          <!-- <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
-          </q-avatar> -->
+
+        <q-toolbar>
+         <q-btn flat round dense icon="login" label="Logout" @click="logout()"/>
+    
 
          <q-toolbar-title class="text-center">  <span class="time shadow text-center" v-text="currentTime"></span> </q-toolbar-title>
-         <q-btn flat round dense icon="whatshot" />
+         <q-btn flat round dense icon="face" :label="loginData.name"/>
           
         </q-toolbar>
       </q-header>
 
-    <!-- <q-drawer
-        v-model="drawer"
-        show-if-above
-
-        :mini="miniState"
-        @mouseover="miniState = false"
-        @mouseout="miniState = true"
-
-        :width="200"
-        :breakpoint="500"
-        bordered
-        content-class="bg-grey-3"
-      >
-        <q-scroll-area class="fit">
-          <q-list padding>
-          <router-link to="/">  <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="inbox" />
-              </q-item-section>
-
-              <q-item-section>
-                Home
-              </q-item-section>
-            </q-item></router-link> 
-
-         <router-link to="/about">   <q-item active clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="star" />
-              </q-item-section>
-
-              <q-item-section>
-                 Locations
-              </q-item-section>
-            </q-item></router-link> 
-
-           
-          </q-list>
-        </q-scroll-area>
-      </q-drawer> -->
+  
       <q-page-container>
         <q-page padding>
            <router-view />    
@@ -70,37 +28,69 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
+
  import moment from 'moment'; 
+import { mapGetters  } from 'vuex'
+
 export default {
   name: "Home",
   data () {
     return {
       drawer: false ,
       miniState: true ,
-      currentTime: null
+      currentTime: null ,
+      userName : ''
+    }
+  },
+
+  mounted()
+  {
+    if(!JSON.parse(sessionStorage.getItem('currentUser')))
+    {
+      this.$router.push('/')
+    }
+    else
+    {
+        this.userName = JSON.parse(sessionStorage.getItem('currentUser')).name
     }
   },
   methods: {
+
+    logout()
+    {
+      sessionStorage.removeItem("currentUser")
+    this.$router.push('/')
+
+
+    },
 
     updateCurrentTime() {
       this.currentTime = moment().format('LTS');
     }
 
     },
+     computed: {
+    ...mapGetters([
+         'loginData'
+    ])
+  },
     created() {
     this.currentTime = moment().format('LTS');
     setInterval(() => this.updateCurrentTime(), 1 * 1000);
   }
-  // components: {
-  //   HelloWorld
-  // }
+
 };
 </script>
 
 
 <style lang="scss">
+.q-page-container
+{
+  background: url('./assets/background.jpg')  ;
+  background-size: cover ; 
+  background-repeat: no-repeat ;
+  background-position: 10px ;
+}
  .q-toolbar__title {
     padding: 0 12px;
     text-align: left;

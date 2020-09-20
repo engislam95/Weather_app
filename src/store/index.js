@@ -14,12 +14,14 @@ export default new Vuex.Store({
       long: '',
       cityName: ''
     },
-    favWeather : []
+    favWeather : [] ,
+    loginData:{}
   },
 
   getters: {
     weatherData: state => state.weatherData,
-    favWeather: state => state.favWeather
+    favWeather: state => state.favWeather ,
+    loginData: state => state.loginData
   },
 
 
@@ -34,21 +36,9 @@ export default new Vuex.Store({
     SET_WEATHER_FAV: (state , {weather_data}) => {
 
     
-
-      //   for (let i = 0; i < state.favWeather.length; i++) {
-      //     if (state.favWeather[i] != weather_data) {
-      //        state.favWeather.push(weather_data)
-      //        return state.favWeather;
-      //     }
-      // }
-
-
       const found = state.favWeather.some(el => el.coord.lat === weather_data.coord.lat);
       if (!found) state.favWeather.push(weather_data);
       return state.favWeather;
-
-      
-    
     },
 
 
@@ -60,6 +50,11 @@ export default new Vuex.Store({
     SET_LOCATION : (state , payload) => 
     {
       state.location = payload
+    },
+
+    SET_LOGIN_DATA : (state , payload) =>
+    {
+      state.loginData = payload
     }
 
 

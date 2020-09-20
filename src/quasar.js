@@ -12,5 +12,13 @@ Vue.use(Quasar, {
   directives: {
     /* not needed if importStrategy is not 'manual' */
   },
-  plugins: {}
+  plugins: {} ,
+  framework: {
+    plugins: [
+      'Notify'
+    ],
+    config: {
+      notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
+    }
+  }
 });
