@@ -1,11 +1,104 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from 'axios';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
+
+  state: {
+    weatherData : {} ,
+    cityName: 'London' ,
+    location:{
+      lat: '',
+      long: '',
+      cityName: ''
+    },
+    favWeather : []
+  },
+
+  getters: {
+    weatherData: state => state.weatherData,
+    favWeather: state => state.favWeather
+  },
+
+
+
+  mutations: {
+
+    // Mutate weather data 
+    SET_WEATHER_DATA: (state , {weather_data}) => {
+      state.weatherData = weather_data
+    },
+
+    SET_WEATHER_FAV: (state , {weather_data}) => {
+
+    
+
+      //   for (let i = 0; i < state.favWeather.length; i++) {
+      //     if (state.favWeather[i] != weather_data) {
+      //        state.favWeather.push(weather_data)
+      //        return state.favWeather;
+      //     }
+      // }
+
+
+      const found = state.favWeather.some(el => el.coord.lat === weather_data.coord.lat);
+      if (!found) state.favWeather.push(weather_data);
+      return state.favWeather;
+
+      
+    
+    },
+
+
+    SET_CITY : (state , payload) =>
+    {
+      state.cityName = payload
+    },
+
+    SET_LOCATION : (state , payload) => 
+    {
+      state.location = payload
+    }
+
+
+
+  
+  },
+
+  actions: {
+
+    // Load weather data then commit response 
+    LOAD_WEATHER_DATA: async function ({ commit }) {
+     await axios
+      .get('https://api.openweathermap.org/data/2.5/weather?q=' + this.state.cityName + '&appid=641d47bc20e1dabe6a69d811be1a11af&units=metric')
+      .then(response => {
+        console.log(response.data)
+        commit('SET_WEATHER_DATA', { weather_data: response.data })
+      })
+      .catch(error => {
+        console.log(error)
+        
+      })
+    },
+
+    // Load weather data with lat and long  then commit response 
+    LOAD_WEATHER_DATA_LATLONG: async function ({ commit }) {
+      await axios
+        .get('https://api.openweathermap.org/data/2.5/weather?lat=' + this.state.location.lat + '&lon=' + this.state.location.long + '&appid=641d47bc20e1dabe6a69d811be1a11af&units=metric')
+        .then(response => {
+          console.log(response.data)
+          commit('SET_WEATHER_FAV', { weather_data: response.data })
+        })
+        .catch(error => {
+          console.log(error)
+          
+        })
+      }
+
+
+
+  },
   modules: {}
 });
