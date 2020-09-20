@@ -47,14 +47,14 @@
         <div  v-for="weather in weatherData.weather" :key="weather.id">
             <q-card class="my-card" style="width:50%" :style="[weather.main == 'Clear' ? {'background': 'url(./sunny.jpg) center no-repeat' } : weather.main == 'Clouds'? {'background': 'url(./clouds.jpg) center top no-repeat'}: '' ]">
 
-              <q-btn class="CTOf" @click="convertF(weatherData.main.temp)"  icon-right="send" label="C/F" />
+              <q-btn class="CTOf" @click="convertF_city(weatherData.main.temp)"  icon-right="send" label="C/F" />
               <img :src="'http://openweathermap.org/img/wn/' + weather.icon + '@2x.png'">
 
               <q-card-section>
                 <div class="text-h5">{{weatherData.sys.country}}</div>
                 <div class="text-h6">Avg Temp </div>
-                <div v-if="!transform" class="text-h6">{{weatherData.main.temp}}℃</div>
-                <div v-if="transform" class="text-h6">{{cToFahr}}°F</div>
+                <div v-if="!transform_city" class="text-h6">{{weatherData.main.temp}}℃</div>
+                <div v-if="transform_city" class="text-h6">{{cToFahr_city}}°F</div>
 
               </q-card-section>
 
@@ -77,31 +77,31 @@
 
       <div class="searchFavPlace col-lg-4">
         
-            <q-chip class="chipCity"  icon="directions"> Choose from your favourite locations </q-chip>
+            <q-chip class="chipCity"  icon="directions"> fetch weather by lat / lon </q-chip>
 
-            <div class="addLocations col-lg-2">
-                  <q-btn fill  class="btn_Locationn_lat"  icon-right="my_location" label="fetch weather by lat / lon"  @click="card = true" />
+            <div class="addLocations col-lg-2" style="margin-bottom:17%">
+                  <q-btn fill  class="btn_Locationn_lat"  icon-right="my_location" label="fetch weather by lat / lon"  @click="addLating()" />
             </div>
-          <div class="favWeather row" >
-            <div class="col-lg-5" v-for="weather in favWeather" :key="weather.id">
-                <q-card class="my-card" >
-                  <q-btn @click="convertF(weather.main.temp)" class="CTOf" icon-right="send" label="C/F" />
-                  <img :src="'http://openweathermap.org/img/wn/' + weather.weather[0].icon + '@2x.png'">
+          <div class="favWeather " >
+            <div  v-for="weather in favWeather.weather" :key="weather.id">
+                <q-card class="my-card" :style="[weather.main == 'Clear' ? {'background': 'url(./sunny.jpg) center no-repeat' } : weather.main == 'Clouds'? {'background': 'url(./clouds.jpg) center top no-repeat'}: '' ]">
+                  <q-btn @click="convertF_lating(favWeather.main.temp)" class="CTOf" icon-right="send" label="C/F" />
+                  <img :src="'http://openweathermap.org/img/wn/' + weather.icon + '@2x.png'">
 
                   <q-card-section>
-                    <div class="text-h5">{{weather.sys.country}}</div>
+                    <div class="text-h5">{{favWeather.sys.country}}</div>
                     <div class="text-h6">Avg Temp </div>
-                    <div v-if="!transform" class="text-h6">{{weather.main.temp}}℃</div>
-                    <div v-if="transform" class="text-h6">{{cToFahr}}°F</div>
+                    <div v-if="!transform_lating" class="text-h6">{{favWeather.main.temp}}℃</div>
+                    <div v-if="transform_lating" class="text-h6">{{cToFahr_lating}}°F</div>
 
                   </q-card-section>
 
                   <q-card-section class="q-pt-none">
-                    <h5>  {{ weather.weather[0].description }} </h5>
-                    <h5>  {{ weather.weather[0].main }} </h5>
+                    <h5>  {{ weather.description }} </h5>
+                    <h5>  {{ weather.main }} </h5>
                     <p> {{ moment().format('MMMM Do YYYY, h:mm:ss a') }} </p>
 
-                    <q-btn class="btn_Location" @click="addMarker(weather.coord.lat , weather.coord.lon)" icon-right="my_location" label="View Location On Map"   />
+                    <q-btn class="btn_Location" @click="addMarker(favWeather.coord.lat , favWeather.coord.lon)" icon-right="my_location" label="View Location On Map"   />
                   </q-card-section>
               </q-card>
             </div>
@@ -162,11 +162,7 @@
                   </div>
                 </div>
 
-                <!-- <q-input  color="white" v-model="city_name_model" label-color="white" label="Enter Your City Name">
-                  <template v-slot:prepend>
-                    <q-icon color="white" name="place" />
-                  </template>
-                </q-input> -->
+                
 
                 <q-input  type="number" color="white" v-model="latitude" label-color="white" label="Enter Your latitude">
                   <template v-slot:prepend>
@@ -269,8 +265,10 @@ export default {
         markers: [],
       currentPlace: null ,
       places: [],
-      cToFahr:'',
-      transform: false ,
+      cToFahr_lating: '',
+      cToFahr_city:'',
+      transform_city: false ,
+      transform_lating: false ,
       card_location: false,
       city_name_location: '' ,
       latitude_location: '' ,
@@ -282,6 +280,9 @@ export default {
 
   mounted() {
     this.geolocate();
+    console.log(this.favWeather)
+    console.log(this.weatherData)
+
   },
 
   computed: {
@@ -296,25 +297,35 @@ export default {
 
   methods:{
 
-
+  addLating()
+  {
+    this.card = true ; 
+    this.transform_lating = false ;
+  },
     add_new_location()
     { 
       this.card_location = true 
     },
 
-    convertF(c)
+    convertF_city(c)
     {
      
-        this.cToFahr = c * 9 / 5 + 32;
-        this.transform = true ;
-      
-     
-    
-     
+        this.cToFahr_city = c * 9 / 5 + 32;
+        this.transform_city = true ;
+   
     },
+    convertF_lating(c)
+    {
+     
+        this.cToFahr_lating = c * 9 / 5 + 32;
+        this.transform_lating = true ;
+   
+    },
+
     setCity()
     {
       console.log(this.city_name)
+      this.transform_city = false ;
       this.$store.commit('SET_CITY', this.city_name) 
        this.$store.dispatch('LOAD_WEATHER_DATA')
 
@@ -434,6 +445,8 @@ export default {
 .searchPlace
 {
   margin-right: 10%; 
+  padding-right: 2% ;
+  border-right: 1px solid ;
 }
 .inputCity
 {
@@ -513,7 +526,7 @@ export default {
      margin-bottom:5% ;
      color: #2a5880f0;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1rem;
     
   }
 .listLocation

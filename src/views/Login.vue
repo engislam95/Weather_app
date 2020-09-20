@@ -29,7 +29,7 @@
               ]"
             />
 
-            <q-toggle v-model="accept" label="I accept the license and terms" />
+            <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
             <div>
               <q-btn size="lg" label="Login " type="submit" color="indigo-5"/>
@@ -77,10 +77,7 @@ export default {
          name: this.name ,
          age : this.age
        }
-        if (this.accept !== true) {
-          console.log("eror") ;
-        }
-        else {
+        
           
           console.log("eror") ;
            this.$store.commit('SET_LOGIN_DATA' , userData)
@@ -89,7 +86,7 @@ export default {
 
 
 
-        }
+        
       },
 
       onReset () {
@@ -116,7 +113,7 @@ export default {
   margin: 0 auto ;
   width: 50%;
   position: relative;
-  top: 10rem ;
+  top: 5rem ;
 
 }
 

@@ -3,12 +3,12 @@
     
     <q-layout view="hHh Lpr lff" style="height: 100%" class="shadow-2 rounded-borders">
 
-       <q-header elevated class="bg-blackk">
+       <q-header  elevated class="bg-blackk">
          
 
 
         <q-toolbar>
-         <q-btn flat round dense icon="login" label="Logout" @click="logout()"/>
+         <q-btn  flat round dense icon="login" label="Logout" @click="logout()"/>
     
 
          <q-toolbar-title class="text-center">  <span class="time shadow text-center" v-text="currentTime"></span> </q-toolbar-title>
@@ -39,7 +39,8 @@ export default {
       drawer: false ,
       miniState: true ,
       currentTime: null ,
-      userName : ''
+      userName : '' ,
+      viewed : true
     }
   },
 
@@ -47,19 +48,22 @@ export default {
   {
     if(!JSON.parse(sessionStorage.getItem('currentUser')))
     {
+      this.viewed = false ;
       this.$router.push('/')
     }
     else
     {
-        this.userName = JSON.parse(sessionStorage.getItem('currentUser')).name
+      this.viewed = true ;
     }
+    
   },
   methods: {
 
     logout()
     {
       sessionStorage.removeItem("currentUser")
-    this.$router.push('/')
+        this.$store.commit('SET_LOGIN_DATA' , {})
+        this.$router.push('/')
 
 
     },

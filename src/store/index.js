@@ -14,7 +14,7 @@ export default new Vuex.Store({
       long: '',
       cityName: ''
     },
-    favWeather : [] ,
+    favWeather : {} ,
     loginData:{}
   },
 
@@ -36,9 +36,7 @@ export default new Vuex.Store({
     SET_WEATHER_FAV: (state , {weather_data}) => {
 
     
-      const found = state.favWeather.some(el => el.coord.lat === weather_data.coord.lat);
-      if (!found) state.favWeather.push(weather_data);
-      return state.favWeather;
+     state.favWeather = weather_data
     },
 
 
